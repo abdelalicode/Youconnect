@@ -3,7 +3,7 @@
     <div class="relative">
         <a href="#">
             <img class="w-full"
-                src="https://images.pexels.com/photos/61180/pexels-photo-61180.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500"
+                src="{{ asset('storage/' . $post->image) }}"
                 alt="Sunset in the mountains">
             <div
                 class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">

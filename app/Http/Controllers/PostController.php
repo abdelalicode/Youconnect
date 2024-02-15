@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -28,10 +28,28 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'content' => 'required'
+        ]);
+    
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+    
+        $user_id = 1;
+
+        $post = new Post($validatedData);
+        $post->user_id = $user_id;
+        $post->save();
+    
+        return redirect()->route('homepage');
     }
+    
+
 
     /**
      * Display the specified resource.
@@ -52,7 +70,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(Request $request, Post $post)
     {
         //
     }
