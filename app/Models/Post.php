@@ -15,10 +15,22 @@ class Post extends Model
         'user_id'
     ];
 
-
-
-
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function comments()
+    {
+        return $this->HasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->HasMany(Like::class);
+    }
+
+    public function likers()
+    {
+        return $this->belongsToMany(User::class, 'likes');
     }
 }
