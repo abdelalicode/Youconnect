@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::get('connexion',[AuthController::class,"connexion"])->name("connexion");
+Route::get('inscription', [AuthController::class, "inscription"])->name("inscription");
+Route::post('signup',[AuthController::class,"signup"])->name("signup");
+Route::post('signing',[AuthController::class,"signing"])->name("signing");
 
 
 
