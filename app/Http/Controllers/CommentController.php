@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {  
-        $posts = Post::orderBy('created_at', 'desc')->with('comments.user')->withCount('likers')->get();
-        return view('home.home', compact('posts'));
+    {
+        //
     }
 
     /**
@@ -30,7 +29,14 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedcomment = $request->validate([
+            'content' => 'required',
+            'user_id' => 'required',
+            'post_id' => 'required'
+        ]);
+
+        $comment = Comment::create($validatedcomment);
+        return redirect()->route('homepage');
     }
 
     /**

@@ -42,9 +42,10 @@ class PostController extends Controller
     
         $user_id = 1;
 
-        $post = new Post($validatedData);
-        $post->user_id = $user_id;
-        $post->save();
+        // $post = new Post($validatedData);
+        // $post->user_id = $user_id;
+        // $post->save();
+        $post = Post::create(array_merge($validatedData, ['user_id' => $user_id]));
     
         return redirect()->route('homepage');
     }
