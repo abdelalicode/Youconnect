@@ -43,10 +43,13 @@ class LikeController extends Controller
         $postObj = Post::findorFail($request->post_id);
         if ($postObj->likers()->wherePivot('user_id', $request->user_id)->exists()) {
             $postObj->likers()->detach($request->user_id);
-            return redirect()->route('homepage');
+        }
+        else
+        {
+            $postObj->likers()->toggle($request->user_id);
+
         }
         
-        $postObj->likers()->sync($request->user_id);
 
        return redirect()->route('homepage');
 
