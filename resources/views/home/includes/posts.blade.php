@@ -10,14 +10,18 @@
         </a>
         <div
             class="text-xs absolute top-0 right-0 
-            {{-- @if ($post->likers->contains('id', auth()->id()))  --}}
-            @if ($post->likers->contains('id', 1)) bg-white text-red-600 
+            @if ($post->likers->contains('id', auth()->id())) 
+            {{-- @if ($post->likers->contains('id', 1))  --}}
+            bg-white text-red-600 
         @else 
             bg-red-600 text-white @endif 
             px-3 py-2  mt-3 mr-3   transition duration-500 ease-in-out">
+            @auth
+                
+            
             <form action="{{ route('addLike') }}" method="post">
                 @csrf
-                <input type="hidden" name="user_id" value="1">
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                 <input type="hidden" name="post_id" value=" {{ $post->id }}">
                 <button type="submit">
                     <span class="material-symbols-outlined">
@@ -25,13 +29,14 @@
                     </span>
                 </button>
             </form>
+            @endauth
         </div>
     </div>
     <div class="pb-24 px-4 py-2">
         <div class="flex gap-2 mb-2">
             <img class="w-6 h-6 rounded-full" src="https://api.dicebear.com/7.x/pixel-art/svg" alt="Rounded avatar">
             <a href="#"
-                class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->name }}</a>
+                class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->firstName }} {{ $post->user->lastName }}</a>
         </div>
         <span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
             <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +146,7 @@
                                                     src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
                                                     alt="">
                                                 <div class="ms-4 font-medium text-sm dark:text-white">
-                                                    <p>{{ $comment->user->name }}</p>
+                                                    <p>{{ $comment->user->firstName }} {{ $comment->user->lastName }}</p>
                                                     <div
                                                         class="text-[10px] text-gray-500 dark:text-gray-400 font-thin">
 

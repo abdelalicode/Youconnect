@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return redirect()->route("inscription");
+            return redirect()->route("homepage");
         } else {
             return redirect()->back()->withErrors(['message' => 'Invalid credentials']);
         }
@@ -54,6 +54,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('connexion')->with('success', 'You have been logged out successfully.');
+        return redirect()->route('homepage')->with('success', 'You have been logged out successfully.');
     }
 }

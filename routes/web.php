@@ -23,6 +23,7 @@ Route::get('connexion',[AuthController::class,"connexion"])->name("connexion");
 Route::get('inscription', [AuthController::class, "inscription"])->name("inscription");
 Route::post('signup',[AuthController::class,"signup"])->name("signup");
 Route::post('signing',[AuthController::class,"signing"])->name("signing");
+Route::get('logout',[AuthController::class,"logout"])->name("logout");
 
 
 
@@ -30,8 +31,9 @@ Route::post('signing',[AuthController::class,"signing"])->name("signing");
 
 
 Route::get('/', [HomeController::class,'index'])->name('homepage');
-Route::post('/addPost', [PostController::class, 'store'])->name('addPost');
-Route::post('/addComment', [CommentController::class, 'store'])->name('addComment');
 
-Route::post('/addLike', [LikeController::class, 'store'])->name('addLike');
+Route::post('/addPost', [PostController::class, 'store'])->name('addPost')->middleware('auth');
+Route::post('/addComment', [CommentController::class, 'store'])->name('addComment')->middleware('auth');
+
+Route::post('/addLike', [LikeController::class, 'store'])->name('addLike')->middleware('auth');
 
