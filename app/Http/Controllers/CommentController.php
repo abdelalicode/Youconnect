@@ -31,13 +31,15 @@ class CommentController extends Controller
     {
         $validatedcomment = $request->validate([
             'content' => 'required',
-            'user_id' => 'required',
             'post_id' => 'required'
         ]);
+
+        $validatedcomment['user_id'] = auth()->user()->id;
 
         $comment = Comment::create($validatedcomment);
         return redirect()->route('homepage');
     }
+
 
     /**
      * Display the specified resource.

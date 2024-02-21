@@ -40,7 +40,9 @@ class LikeController extends Controller
 
         // $addlike = Like::create($request->validated());
         // return redirect()->route('homepage');
+        
         $postObj = Post::findorFail($request->post_id);
+
         if ($postObj->likers()->wherePivot('user_id', $request->user_id)->exists()) {
             $postObj->likers()->detach($request->user_id);
         }
