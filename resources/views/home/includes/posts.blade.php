@@ -1,24 +1,37 @@
 <div class="relative mt-2 rounded overflow-hidden shadow flex flex-col max-w-s">
     <a href="#"></a>
     <div class="relative">
-        <a href="#">
+
+        @if($post->user_id == auth()->id())
+
+            <div class="absolute p-5  z-10 opacity-0 hover:opacity-100">
+                <form action=" {{route('post.destroy', $post->id ) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit">
+                        <svg class="w-8 h-8 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                        </svg> 
+                    </button> 
+                </form>         
+            </div>
+        @endif
             <img class="w-full" style="aspect-ratio: 16/9;" src="{{ asset('storage/' . $post->image) }}"
                 alt="Sunset in the mountains">
             <div
                 class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">
             </div>
-        </a>
         <div
             class="text-xs absolute top-0 right-0 
-            @if ($post->likers->contains('id', auth()->id())) 
-            {{-- @if ($post->likers->contains('id', 1))  --}}
-            bg-white text-red-600 
-        @else 
-            bg-red-600 text-white @endif 
+            
             px-3 py-2  mt-3 mr-3   transition duration-500 ease-in-out">
             @auth
                 
-            
+            <div class="@if ($post->likers->contains('id', auth()->id())) 
+                {{-- @if ($post->likers->contains('id', 1))  --}}
+                bg-white text-red-600 px-3 py-2
+            @else 
+                bg-red-600 text-white px-3 py-2 @endif ">
             <form action="{{ route('addLike') }}" method="post">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -29,6 +42,7 @@
                     </span>
                 </button>
             </form>
+        </div>
             @endauth
         </div>
     </div>
@@ -125,7 +139,6 @@
                                                 class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
                                                 type="text" placeholder="Add your comment" aria-label="Full name"
                                                 name="content">
-                                            <input type="hidden" name="user_id" value="1">
                                             <input type="hidden" name="post_id" value="{{ $post->id }}">
                                             <button
                                                 class="flex-shrink-0 bg-sky-500 hover:bg-sky-700 border-sky-500 hover:border-sky-700 text-sm border-4 text-white px-1 rounded"
@@ -218,3 +231,4 @@
         </span>
     </div>
 </div>
+

@@ -121,7 +121,13 @@
                     <h2 class="text-xl overline font-semibold">NEW FEED</h2>
                 </div>
                 <div class="grid grid-cols-1 gap-2">
+                    @auth
                     @include('home.includes.addpost')
+                    @else
+                    <div class="mtr-5">
+                        @include('home.includes.noaddpost')
+                    </div>
+                    @endauth
                     <div class="bg-white flex-grow px-5">
 
                         <div class="grid grid-cols-2 gap-4 justify-center">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -34,22 +35,21 @@ class PostController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'content' => 'required'
         ]);
-    
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('uploads', 'public');
             $validatedData['image'] = $imagePath;
         }
-    
-        $user_id = 1;
 
-        // $post = new Post($validatedData);
+        $user_id = auth()->user()->id;
+
         // $post->user_id = $user_id;
         // $post->save();
         $post = Post::create(array_merge($validatedData, ['user_id' => $user_id]));
-    
+
         return redirect()->route('homepage');
     }
-    
+
 
 
     /**
@@ -81,6 +81,21 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        echo "ALLO";
+    }
+
+
+    public function follows(Request $request)
+    {
+        $validated = $request->validate([
+            'followee_id' => 'required'
+        ]);
+
+        $followerId = auth()->id();
+
+        $user = User::find($followerId);
+        $user->followees()->sync($validated['followee_id']);
+
+        return redirect()->route('homepage');
     }
 }

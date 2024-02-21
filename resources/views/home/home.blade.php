@@ -15,10 +15,22 @@
 
 
 @section('suggestion')
-@for ($i = 0; $i < 3; $i++)
+
+
+@if ($followees !== null)
+
+@foreach ($followees as $followee)
+    
+
 @include('home.includes.suggestion')
 
-@endfor
+@endforeach
+@else
+
+<h5>{{  "No Suggestions at the moment!" }}</h5>
+@endif
+
+
 
 @endsection
 
