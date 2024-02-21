@@ -38,5 +38,6 @@ Route::post('/addComment', [CommentController::class, 'store'])->name('addCommen
 Route::post('/addLike', [LikeController::class, 'store'])->name('addLike')->middleware('auth');
 Route::post('/follows', [PostController::class, 'follows'])->name('follows')->middleware('auth');
 
-Route::delete('/delete', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
+Route::delete('/deletepost', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
+Route::delete('/deletecomment', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth');
 

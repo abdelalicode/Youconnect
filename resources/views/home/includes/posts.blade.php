@@ -2,47 +2,50 @@
     <a href="#"></a>
     <div class="relative">
 
-        @if($post->user_id == auth()->id())
-
+        @if ($post->user_id == auth()->id())
             <div class="absolute p-5  z-10 opacity-0 hover:opacity-100">
-                <form action=" {{route('post.destroy', $post->id ) }}" method="POST">
+                <form action=" {{ route('post.destroy') }}" method="post">
                     @method('DELETE')
                     @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->id }}">
                     <button type="submit">
-                        <svg class="w-8 h-8 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
-                        </svg> 
-                    </button> 
-                </form>         
+                        <svg class="w-8 h-8 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </form>
             </div>
         @endif
-            <img class="w-full" style="aspect-ratio: 16/9;" src="{{ asset('storage/' . $post->image) }}"
-                alt="Sunset in the mountains">
-            <div
-                class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">
-            </div>
+        <img class="w-full" style="aspect-ratio: 16/9;" src="{{ asset('storage/' . $post->image) }}"
+            alt="Sunset in the mountains">
+        <div
+            class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">
+        </div>
         <div
             class="text-xs absolute top-0 right-0 
             
             px-3 py-2  mt-3 mr-3   transition duration-500 ease-in-out">
             @auth
-                
-            <div class="@if ($post->likers->contains('id', auth()->id())) 
-                {{-- @if ($post->likers->contains('id', 1))  --}}
+
+                <div
+                    class="@if ($post->likers->contains('id', auth()->id())) {{-- @if ($post->likers->contains('id', 1))  --}}
                 bg-white text-red-600 px-3 py-2
             @else 
                 bg-red-600 text-white px-3 py-2 @endif ">
-            <form action="{{ route('addLike') }}" method="post">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                <input type="hidden" name="post_id" value=" {{ $post->id }}">
-                <button type="submit">
-                    <span class="material-symbols-outlined">
-                        favorite
-                    </span>
-                </button>
-            </form>
-        </div>
+                    <form action="{{ route('addLike') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                        <input type="hidden" name="post_id" value=" {{ $post->id }}">
+                        <button type="submit">
+                            <span class="material-symbols-outlined">
+                                favorite
+                            </span>
+                        </button>
+                    </form>
+                </div>
             @endauth
         </div>
     </div>
@@ -50,7 +53,8 @@
         <div class="flex gap-2 mb-2">
             <img class="w-6 h-6 rounded-full" src="https://api.dicebear.com/7.x/pixel-art/svg" alt="Rounded avatar">
             <a href="#"
-                class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->firstName }} {{ $post->user->lastName }}</a>
+                class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->firstName }}
+                {{ $post->user->lastName }}</a>
         </div>
         <span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
             <svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +115,7 @@
                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                                     Comments
                                 </h3>
-                                
+
                                 <button type="button"
                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     data-modal-hide="#Modal{{ $post->id }}">
@@ -123,7 +127,7 @@
                                     <span class="sr-only">Close modal</span>
                                 </button>
 
-                                
+
                             </div>
                             <!-- Modal body -->
                             <div class="ml-2 p-4 md:p-5 space-y-4">
@@ -155,11 +159,33 @@
                                     <article class="md:gap-8 md:grid md:grid-cols-3 mb-5 gap-3">
                                         <div>
                                             <div class="flex items-center mb-6">
+
+                                                @if ($comment->user->id == auth()->id())
+                                                    <div class="absolute pl-96 pb-8 z-10 opacity-0 hover:opacity-100">
+                                                        <form action=" {{ route('comment.destroy') }}" method="post">
+                                                            @method('DELETE')
+                                                            @csrf
+                                                            <input type="hidden" name="comment_id"
+                                                                value="{{ $comment->id }}">
+                                                            <button type="submit">
+                                                                <svg class="w-8 h-8 text-red-500" aria-hidden="true"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="currentColor" viewBox="0 0 24 24">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                                                        clip-rule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endif
+
                                                 <img class="w-10 h-10 rounded-full"
                                                     src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
                                                     alt="">
                                                 <div class="ms-4 font-medium text-sm dark:text-white">
-                                                    <p>{{ $comment->user->firstName }} {{ $comment->user->lastName }}</p>
+                                                    <p>{{ $comment->user->firstName }} {{ $comment->user->lastName }}
+                                                    </p>
                                                     <div
                                                         class="text-[10px] text-gray-500 dark:text-gray-400 font-thin">
 
@@ -231,4 +257,3 @@
         </span>
     </div>
 </div>
-
