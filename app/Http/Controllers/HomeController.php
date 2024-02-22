@@ -20,6 +20,7 @@ class HomeController extends Controller
 
         if ($user) {
             $followedUserIds = $user->followees()->pluck('id');
+            
             $followedUserIds->push($user->id);
 
             $followees = User::whereNotIn('id', $followedUserIds)->get();
