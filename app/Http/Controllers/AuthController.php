@@ -14,8 +14,8 @@ class AuthController extends Controller
         return view("connexion");
     }
     public function inscription()
-    { 
-        
+    {
+
         return view("inscription");
     }
 
@@ -32,7 +32,7 @@ class AuthController extends Controller
     }
 
     public function signup(Request $request)
-    
+
     {
         $request->validate([
             'firstName' => 'required|string|min:4|max:12',
@@ -41,12 +41,12 @@ class AuthController extends Controller
             'password' => 'required|min:6',
             'password_confirmation' => 'required|same:password',
         ]);
-       
+
         $user = new User();
-        $user->firstName = $request->input("firstName"); 
+        $user->firstName = $request->input("firstName");
         $user->lastName = $request->input("lastName");
         $user->email = $request->input("email");
-        $user->password = bcrypt($request->input("password")); 
+        $user->password = bcrypt($request->input("password"));
         $user->save();
         return redirect()->route("connexion");
     }
@@ -56,4 +56,42 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('homepage')->with('success', 'You have been logged out successfully.');
     }
+
+    public function EditeProfil(Request $request)
+    {
+         $user = Auth::user();
+        return view('EditeProfil', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+{
+    $user = Auth::user();
+
+    $request->validate([
+        'firstName' => 'required|string|min:4|max:12',
+        'lastName' =>  'required|string|min:4|max:12',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'password' => 'nullable|min:6',
+        'password_confirmation' => 'nullable|same:password',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $user->firstName = $request->input("firstName");
+    $user->lastName = $request->input("lastName");
+    $user->email = $request->input("email");
+
+    if ($request->filled('password')) {
+        $user->password = bcrypt($request->input("password"));
+    }
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public');
+        $user->image = $imagePath;
+    }
+
+    $user->save();
+
+    return redirect()->back()->with('success', 'Profile updated successfully.');
+}
+
 }
