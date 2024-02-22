@@ -39,4 +39,6 @@ Route::post('/addLike', [LikeController::class, 'store'])->name('addLike')->midd
 Route::post('/follows', [PostController::class, 'follows'])->name('follows')->middleware('auth');
 
 Route::delete('/delete', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
+Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+Route::get('EditeProfil', [AuthController::class, 'EditeProfil'])->name('EditeProfil');
 

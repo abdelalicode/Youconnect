@@ -17,12 +17,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstName', 
+        'firstName',
         'lastName',
         'email',
         'password',
+        'image',
     ];
-    
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -74,7 +75,7 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
     }
 
-    
-   
+
+
 
 }

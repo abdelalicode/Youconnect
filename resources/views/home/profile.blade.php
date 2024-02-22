@@ -1,14 +1,18 @@
 <div class="w-full max-w-sm overflow-hidden bg-white rounded-lg dark:bg-gray-800">
-    <img class="object-cover object-center w-full h-48" src="https://i.pravatar.cc/150?img=56" alt="avatar">
+    @if(Auth::check() && Auth::user()->image)
+    <img class="object-cover object-center w-full h-48" src="{{ asset('storage/' . Auth::user()->image) }}" alt="avatar">
+@else
+    <img class="object-cover object-center w-full h-48" src="{{ asset('path_vers_image_par_defaut.jpg') }}" alt="avatar">
+@endif
 
     <div class="flex items-center px-4 py-2 bg-gray-900">
         <span  class="material-symbols-outlined w-6 h-6 text-white fill-current">
             person
             </span>
 
-        
-
+            <a href="{{ route('EditeProfil') }}">
         <h1 class="mx-3 text-base font-semibold text-white">Profile</h1>
+       </a>
     </div>
 
     <div class="px-4 py-2">
