@@ -51,7 +51,7 @@
     </div>
     <div class="pb-24 px-4 py-2">
         <div class="flex gap-2 mb-2">
-            <img class="w-6 h-6 rounded-full" src="https://api.dicebear.com/7.x/pixel-art/svg" alt="Rounded avatar">
+            <img class="w-6 h-6 rounded-full" src="{{ asset('storage/' . $post->user->image) }}" alt="Rounded avatar">
             <a href="#"
                 class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->firstName }}
                 {{ $post->user->lastName }}</a>

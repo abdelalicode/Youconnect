@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Notifiication;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -37,6 +38,13 @@ class CommentController extends Controller
         $validatedcomment['user_id'] = auth()->user()->id;
 
         $comment = Comment::create($validatedcomment);
+        
+
+        Notifiication::create([
+            'user_id' => auth()->user()->id,
+            'type' => 'comment',
+            'post_id' => $validatedcomment['post_id'],
+        ]);
         return redirect()->route('homepage');
     }
 

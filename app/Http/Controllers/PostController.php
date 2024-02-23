@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Notifiication;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
@@ -96,7 +97,16 @@ class PostController extends Controller
         $followerId = auth()->id();
 
         $user = User::find($followerId);
-        $user->followees()->sync($validated['followee_id']);
+
+        if ($user) {
+            $user->followees()->toggle($validated['followee_id']);
+
+            Notifiication::create([
+                'user_id' => auth()->user()->id,
+                'type' => 'follow',
+            ]);
+        }
+
 
         return redirect()->route('homepage');
     }

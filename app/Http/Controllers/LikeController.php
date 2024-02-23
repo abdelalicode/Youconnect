@@ -6,6 +6,7 @@ use App\Models\Like;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
+use App\Models\Notifiication;
 use App\Models\Post;
 
 class LikeController extends Controller
@@ -49,6 +50,12 @@ class LikeController extends Controller
         else
         {
             $postObj->likers()->toggle($request->user_id);
+
+            Notifiication::create([
+                'user_id' => auth()->user()->id,
+                'type' => 'like',
+                'post_id' => $request->post_id,
+            ]);
 
         }
         

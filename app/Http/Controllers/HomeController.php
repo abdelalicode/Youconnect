@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notifiication;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,13 +21,11 @@ class HomeController extends Controller
 
         if ($user) {
             $followedUserIds = $user->followees()->pluck('id');
-            
+
             $followedUserIds->push($user->id);
 
             $followees = User::whereNotIn('id', $followedUserIds)->get();
-        }
-        else
-        {
+        } else {
             $followees = null;
         }
 
@@ -35,9 +34,28 @@ class HomeController extends Controller
             ->withCount('likers')
             ->get();
 
+        if (auth()->check()) {
+            $notifications = Notifiication::where('rode', 0)
+                ->with('post.user')
+                ->get();
+            $follownotifications = Notifiication::where('rode', 0)
+                ->get();
+
+            $notifications = $notifications->filter(function ($notification) {
+
+                if ($notification->post && $notification->post->user) {
+                    return $notification->post->user->id == auth()->user()->id;
+                } else {
+                    return false;
+                }
+            });
+        } else {
+            $notifications = null;
+        }
 
 
-        return view('home.home', compact('posts', 'followees'));
+
+        return view('home.home', compact('posts', 'followees', 'notifications', 'follownotifications'));
     }
 
 
