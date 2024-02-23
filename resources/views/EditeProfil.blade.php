@@ -5,7 +5,13 @@
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="{{ $user->profile_image ? asset($user->profile_image) : 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg' }}">
+                @if (Auth::check() && Auth::user()->image)
+                <img class="rounded-circle mt-5" width="150px" src="{{asset('storage/'.Auth::user()->image)}}"
+                    alt="user photo">
+                    @else
+                    <img class="rounded-circle mt-5" width="150px" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                    alt="user photo">
+                    @endif
                 <span class="font-weight-bold">{{ $user->firstName }}.{{ $user->lastName }}</span>
                 <span class="text-black-50">{{ $user->email }}</span>
                 <span> </span>
@@ -44,15 +50,20 @@
                         <div class="col-md-12">
                             <label class="labels">Profile Image</label>
                             <input type="file" class="form-control" name="image">
-                            @if($user->image)
-                            <div>
-                                <img src="{{ asset($user->image) }}" alt="Image" >
-                            </div>
-                        @endif
                         </div>
                         <div class="mt-5 text-center">
-                            <button type="submit" class="btn btn-primary profile-button">Save Profile</button>
+                            <button type="submit" class="btn btn-primary profile-button text-black">Save Profile</button>
                         </div>
+                </form>
+                <br>
+                <hr>
+                <br>
+                <h4>pour suprrimer votre compte</h4>
+                <br>
+                <form action="{{ route('user.destroy') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger profile-button text-black" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
                 </form>
             </div>
         </div>

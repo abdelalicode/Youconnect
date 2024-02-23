@@ -96,7 +96,7 @@ class PostController extends Controller
         $followerId = auth()->id();
 
         $user = User::find($followerId);
-        $user->followees()->sync($validated['followee_id']);
+        $user->followees()->toggle($validated['followee_id']);
 
         return redirect()->route('homepage');
     }

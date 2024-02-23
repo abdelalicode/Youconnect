@@ -52,8 +52,13 @@
                         class="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
                         type="button">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 me-2 rounded-full" src="https://i.pravatar.cc/150?img=56"
+                        @if (Auth::check() && Auth::user()->image)
+                        <img class="w-8 h-8 me-2 rounded-full" src="{{asset('storage/'.Auth::user()->image)}}"
                             alt="user photo">
+                            @else
+                            <img class="w-8 h-8 me-2 rounded-full" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                            alt="user photo">
+                            @endif
                         {{Auth::user()->firstName}} {{Auth::user()->lastName}}
                         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 10 6">
@@ -110,6 +115,7 @@
                 </div>
                 <div class="justify-center">
                     @yield('EditeProfil')
+                    @yield('content')
                 </div>
 
             </div>

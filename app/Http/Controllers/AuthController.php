@@ -94,4 +94,22 @@ class AuthController extends Controller
     return redirect()->back()->with('success', 'Profile updated successfully.');
 }
 
+public function destroy()
+{
+    $user = Auth::user();
+
+    $user->posts()->delete();
+
+    $user->delete();
+
+    Auth::logout();
+
+    return redirect()->route('homepage')->with('success', 'Your account has been deleted successfully.');
+}
+public function userList()
+{
+    $users = User::all(); // Récupérer tous les utilisateurs
+
+    return view('userList', compact('users'));
+}
 }

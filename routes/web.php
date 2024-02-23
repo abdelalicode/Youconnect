@@ -38,12 +38,13 @@ Route::post('/addComment', [CommentController::class, 'store'])->name('addCommen
 Route::post('/addLike', [LikeController::class, 'store'])->name('addLike')->middleware('auth');
 Route::post('/follows', [PostController::class, 'follows'])->name('follows')->middleware('auth');
 
-<<<<<<< HEAD
 Route::delete('/delete', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
 Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
 Route::get('EditeProfil', [AuthController::class, 'EditeProfil'])->name('EditeProfil');
-=======
 Route::delete('/deletepost', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
 Route::delete('/deletecomment', [CommentController::class, 'destroy'])->name('comment.destroy')->middleware('auth');
->>>>>>> 81262b27e1da998533accccd2da5ed8cb0c5a4e2
+
+Route::middleware('auth')->delete('/user', [AuthController::class, 'destroy'])->name('user.destroy');
+
+Route::get('/userList', [AuthController::class, 'userList'])->name('userList');
 

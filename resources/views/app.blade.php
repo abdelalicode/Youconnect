@@ -58,8 +58,13 @@
                         class="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
                         type="button">
                         <span class="sr-only">Open user menu</span>
+                        @if (Auth::check() && Auth::user()->image)
                         <img class="w-8 h-8 me-2 rounded-full" src="{{asset('storage/'.Auth::user()->image)}}"
                             alt="user photo">
+                            @else
+                            <img class="w-8 h-8 me-2 rounded-full" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                            alt="user photo">
+                            @endif
                         {{Auth::user()->firstName}} {{Auth::user()->lastName}}
                         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 10 6">
@@ -138,9 +143,12 @@
             </div>
             <div class="col-span-2 bg-white p-8">
 
-                <span
-                    class="bg-purple-100 text-purple-800 text-sm font-medium me-2 px-2.5 py-1.5 rounded dark:bg-purple-900 dark:text-purple-300 mb-24">People
-                    To follow</span>
+                <a href="userList" class="bg-purple-100 text-purple-800 text-sm font-medium me-2 px-2.5 py-1.5 rounded dark:bg-purple-900 dark:text-purple-300 mb-24">
+                    People
+                    To contacter</a>
+                    <span href="userList" class="bg-purple-100 text-purple-800 text-sm font-medium me-2 px-2.5 py-1.5 rounded dark:bg-purple-900 dark:text-purple-300 mb-24">
+                        People
+                        To follow</span>
 
                 <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 mt-8 ml-8"
                     id="navbar-sticky">
