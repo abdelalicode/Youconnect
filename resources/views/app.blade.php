@@ -53,17 +53,20 @@
                 @endguest
 
                 @auth
-                <div class="mr-12 mt-2">
-                    @include('home.includes.notifications')
-                </div>
-                
+                    <div class="mr-12 mt-2">
+                        @include('home.includes.notifications')
+                    </div>
+
 
                     <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName"
                         class="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
                         type="button">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 me-2 rounded-full" src="{{ asset('storage/' . Auth::user()->image) }}"
-                            alt="user photo">
+                        <img class="w-8 h-8 me-2 rounded-full"
+                            @if (Auth::user()->image) src="{{ asset('storage/' . Auth::user()->image) }}"
+                            @else
+                                src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" @endif>
+
                         {{ Auth::user()->firstName }} {{ Auth::user()->lastName }}
                         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 10 6">
@@ -80,7 +83,7 @@
                         </div>
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
                             aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
-                                
+
                             <li>
                                 <a href="#"
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>

@@ -51,6 +51,7 @@ class HomeController extends Controller
             });
         } else {
             $notifications = null;
+            $follownotifications = null;
         }
 
 

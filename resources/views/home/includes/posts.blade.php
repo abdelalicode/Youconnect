@@ -51,8 +51,11 @@
     </div>
     <div class="pb-24 px-4 py-2">
         <div class="flex gap-2 mb-2">
-            <img class="w-6 h-6 rounded-full" src="{{ asset('storage/' . $post->user->image) }}" alt="Rounded avatar">
-            <a href="#"
+            @if ($post->user->image)
+                <img class="w-6 h-6 rounded-full" src="{{ asset('storage/' . $post->user->image) }}" alt="User Avatar">
+            @else
+                <img class="w-6 h-6 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="Default Avatar">
+            @endif <a href="#"
                 class="font-medium text-base inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">{{ $post->user->firstName }}
                 {{ $post->user->lastName }}</a>
         </div>
@@ -162,7 +165,8 @@
 
                                                 @if ($comment->user->id == auth()->id())
                                                     <div class="absolute pl-96 pb-8 z-10 opacity-0 hover:opacity-100">
-                                                        <form action=" {{ route('comment.destroy') }}" method="post">
+                                                        <form action=" {{ route('comment.destroy') }}"
+                                                            method="post">
                                                             @method('DELETE')
                                                             @csrf
                                                             <input type="hidden" name="comment_id"
