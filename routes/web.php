@@ -31,6 +31,8 @@ Route::get('logout',[AuthController::class,"logout"])->name("logout");
 
 
 Route::get('/', [HomeController::class,'index'])->name('homepage');
+Route::get('/search', [HomeController::class,'search'])->name('search');
+Route::get('/readnotif/{notifid}', [HomeController::class, 'readNotific'])->name('readnotification');
 
 Route::post('/addPost', [PostController::class, 'store'])->name('addPost')->middleware('auth');
 Route::post('/addComment', [CommentController::class, 'store'])->name('addComment')->middleware('auth');

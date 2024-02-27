@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Notifiication;
 use App\Models\Post;
 use App\Models\User;
+use App\Repositories\NotificationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -14,6 +16,14 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private $notificationRepository;
+
+    public function __construct(NotificationRepository $notificationRepository)
+    {
+        $this->notificationRepository = $notificationRepository;
+    }
+
     public function index()
     {
 
@@ -24,7 +34,9 @@ class HomeController extends Controller
 
             $followedUserIds->push($user->id);
 
-            $followees = User::whereNotIn('id', $followedUserIds)->get();
+            $followees = User::whereNotIn('id', $followedUserIds)
+                ->orderBy('created_at', 'desc')
+                ->get();
         } else {
             $followees = null;
         }
@@ -35,30 +47,35 @@ class HomeController extends Controller
             ->get();
 
         if (auth()->check()) {
-            $notifications = Notifiication::where('rode', 0)
-                ->with('post.user')
-                ->get();
-            $follownotifications = Notifiication::where('rode', 0)
-                ->get();
-
-            $notifications = $notifications->filter(function ($notification) {
-
-                if ($notification->post && $notification->post->user) {
-                    return $notification->post->user->id == auth()->user()->id;
-                } else {
-                    return false;
-                }
-            });
+            $notifications= $this->notificationRepository->getNotifications();
+            
         } else {
             $notifications = null;
-            $follownotifications = null;
         }
-
-
-
-        return view('home.home', compact('posts', 'followees', 'notifications', 'follownotifications'));
+        return view('home.home', compact('posts', 'followees', 'notifications'));
     }
 
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->input('query');
+            $users = User::where('firstName', 'LIKE', '%' . $query . '%')
+            ->orWhere('lastName', 'LIKE', '%' . $query . '%')
+            ->get();
+            return response()->json(['users' => $users]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e]);
+        }
+    }
+
+
+    public function readNotific($notifid)
+    {
+        $read = $this->notificationRepository->readNotification($notifid);
+        
+        return redirect()->route('homepage');
+    }
 
     /**
      * Show the form for creating a new resource.

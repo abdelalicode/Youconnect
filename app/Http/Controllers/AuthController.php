@@ -39,7 +39,6 @@ class AuthController extends Controller
             'lastName' =>  'required|string|min:4|max:12',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'password_confirmation' => 'required|same:password',
         ]);
 
         $user = new User();

@@ -28,7 +28,7 @@
             </div>
         @endif
         @foreach ($notifications as $notification)
-            <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <a href="{{ route('readnotification', ['notifid' => $notification->id]) }}" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <div class="flex-shrink-0">
                     @if ($notification->post)
                         <img class="rounded-full w-11 h-11" src="{{ asset('storage/' . $notification->post->image) }}"
