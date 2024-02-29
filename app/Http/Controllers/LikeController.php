@@ -8,12 +8,24 @@ use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
 use App\Models\Notifiication;
 use App\Models\Post;
+use App\Repositories\IntNotificationRepository;
+use App\Repositories\NotificationRepository;
+use App\Services\IntNotificationService;
+use App\Services\NotificationService;
 
 class LikeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+     private $notificationService;
+
+     public function __construct(IntNotificationService $notificationService)
+     {
+         $this->notificationService = $notificationService;
+     }
+
     public function index()
     {
         //
@@ -41,27 +53,25 @@ class LikeController extends Controller
 
         // $addlike = Like::create($request->validated());
         // return redirect()->route('homepage');
-        
+
         $postObj = Post::findorFail($request->post_id);
 
         if ($postObj->likers()->wherePivot('user_id', $request->user_id)->exists()) {
             $postObj->likers()->detach($request->user_id);
-        }
-        else
-        {
+        } else {
             $postObj->likers()->toggle($request->user_id);
 
-            Notifiication::create([
-                'user_id' => auth()->user()->id,
-                'type' => 'like',
-                'post_id' => $request->post_id,
-            ]);
+            // Notifiication::create([
+            //     'user_id' => auth()->user()->id,
+            //     'type' => 'like',
+            //     'post_id' => $request->post_id,
+            // ]);
 
+            $this->notificationService->addNotification(auth()->user()->id, 'like', $request->post_id);
         }
-        
 
-       return redirect()->route('homepage');
 
+        return redirect()->route('homepage');
     }
 
     /**
@@ -93,6 +103,5 @@ class LikeController extends Controller
      */
     public function destroy(Like $like)
     {
-        
     }
 }

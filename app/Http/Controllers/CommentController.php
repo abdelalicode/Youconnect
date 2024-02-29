@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Notifiication;
+use App\Repositories\IntNotificationRepository;
+use App\Services\IntNotificationService;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -12,6 +14,14 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     private $notificationService;
+
+    public function __construct(IntNotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function index()
     {
         //
@@ -40,11 +50,15 @@ class CommentController extends Controller
         $comment = Comment::create($validatedcomment);
         
 
-        Notifiication::create([
-            'user_id' => auth()->user()->id,
-            'type' => 'comment',
-            'post_id' => $validatedcomment['post_id'],
-        ]);
+        // Notifiication::create([
+        //     'user_id' => auth()->user()->id,
+        //     'type' => 'comment',
+        //     'post_id' => $validatedcomment['post_id'],
+        // ]);
+
+        $this->notificationService->addNotification(auth()->user()->id, 'comment', $validatedcomment['post_id']);
+
+
         return redirect()->route('homepage');
     }
 

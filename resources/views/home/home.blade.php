@@ -99,7 +99,6 @@ id="navbar-sticky">
                         </div>
                     </div>
                 `;
-                // Append the generated HTML to the followerstemp div
                 followerstemp.innerHTML += html;
             });
     })

@@ -6,10 +6,13 @@
             d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
     </svg>
     @if (count($notifications) > 0)
-        <div
-            class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
-        </div>
-    @endif
+    @foreach ($notifications as $notification)
+        @if ($notification->rode == 0)
+            <div class="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
+            </div>
+        @endif
+    @endforeach
+@endif
 </button>
 
 
@@ -28,10 +31,12 @@
             </div>
         @endif
         @foreach ($notifications as $notification)
-            <a href="{{ route('readnotification', ['notifid' => $notification->id]) }}" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <a href="{{ route('readnotification', ['notifid' => $notification->id]) }}" 
+            class="flex px-4 py-3 
+                   @if ($notification->rode == 1) bg-gray-200 @else bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 @endif">
                 <div class="flex-shrink-0">
                     @if ($notification->post)
-                        <img class="rounded-full w-11 h-11" src="{{ asset('storage/' . $notification->post->image) }}"
+                        <img class="rounded-full w-11 h-11" src="{{ asset('storage/' . $notification->user->image) }}"
                             alt="">
                     @else
                         <img class="rounded-full w-11 h-11"
@@ -49,9 +54,14 @@
                     </div>
                 </div>
                 <div class="w-full ps-3">
-                    <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                    <div class="flex gap-12">
+                        <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
                             class="font-semibold text-gray-900 dark:text-white">{{ $notification->user->firstName }}</span>:
-                        made a {{ $notification->type }} to you!</div>
+                        made a {{ $notification->type }} to this post </div>
+                        <span><img class="rounded-full w-8 h-8" src="{{ asset('storage/' . $notification->post->image) }}"
+                            alt=""></span>
+                    </div>
+                    
                     <div class="text-xs text-blue-600 dark:text-blue-500">
                         {{ $notification->created_at->diffForHumans() }}</div>
                 </div>
